@@ -1,964 +1,1160 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Global Isenções | +10 Anos de Confiança</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* --- RESET E BASICS --- */
-    html { scroll-behavior: smooth; }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { font-size: 18px; color: #333; background-color: #fff; }
-
-    /* --- CORES --- */
-    :root {
-      --azul-forte: #004481;
-      --branco: #ffffff;
-      --cinza-chumbo: #2c3e50;
-      --dourado: #c5a059;
-      --laranja-border: #ff6600;
-      --cinza-bg-header: #e0e0e0;
-      --verde-zap-btn: #25d366; 
-      --verde-zap-icon: #128C7E;
-      --vermelho-tel: #d32f2f;
-      --bg-cinza-claro: #f4f6f8;
-    }
-
-    /* --- HEADER --- */
-    header { background-color: var(--cinza-bg-header); padding: 20px 0; border-bottom: 6px solid var(--laranja-border); }
-    .header-flex { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    
-    .header-left { display: flex; align-items: center; }
-    .header-left img.logo-icon { height: 90px; width: auto; margin-right: 15px; }
-    
-    .header-title h1 { 
-        color: var(--azul-forte); 
-        font-family: 'Times New Roman', Times, serif; 
-        font-size: 2.6rem; 
-        font-weight: 900; 
-        line-height: 1; 
-        margin-bottom: 5px; 
-        letter-spacing: 1px; 
-    }
-    .header-title p { color: #555; font-size: 1.05rem; font-weight: 600; }
-
-    .header-middle ul { 
-      list-style: none; 
-      display: flex; 
-      flex-direction: column;
-      gap: 8px; 
-      align-items: flex-start; 
-    }
-    .header-middle li { 
-      font-size: 1.15rem; 
-      font-weight: bold; 
-      display: flex; 
-      align-items: center; 
-      white-space: nowrap; 
-    }
-    .header-middle i { 
-      font-size: 1.3rem; 
-      margin-right: 8px; 
-      width: 22px; 
-      text-align: center; 
-    }
-    
-    .tel-fixo { color: var(--vermelho-tel); }
-    .tel-zap { color: #000000; } 
-    .tel-cel { color: var(--vermelho-tel); }
-
-    .header-right { display: flex; align-items: center; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .qr-code-img { height: 90px; width: 90px; object-fit: cover; margin-right: 12px; }
-    .qr-text p { font-size: 0.95rem; color: #555; line-height: 1.3; max-width: 160px; }
-
-    @media (max-width: 900px) {
-        .header-flex { flex-direction: column; text-align: center; }
-        .header-left { 
-          flex-direction: row; 
-          justify-content: flex-start; 
-          width: 100%; 
-          margin-left: 10px; 
-          margin-bottom: 15px; 
-        }
-        .header-left img.logo-icon { margin-right: 12px; margin-bottom: 0; }
-        .header-title { text-align: left; }
-        .header-title h1 { font-size: 2.2rem; margin-bottom: 4px; }
-        .header-title p { font-size: 0.95rem; text-align: left; }
-        .header-middle { margin-bottom: 20px; align-items: center; }
-        .header-right { flex-direction: row; text-align: left; }
-    }
-
-    /* --- SEÇÃO SOBRE NÓS --- */
-    .sobre-nos {
-      background-color: var(--azul-forte);
-      color: white;
-      padding: 35px 20px;
-      text-align: center;
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-    .sobre-nos h2 {
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      font-family: Arial, sans-serif;
-    }
-    .sobre-nos p {
-      max-width: 850px;
-      margin: 0 auto;
-      text-align: justify;
-    }
-
-    /* Estilo para "Saiba Mais" */
-    .saiba-mais {
-      display: inline-block;
-      margin-top: 15px;
-      text-decoration: underline;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .saiba-mais:hover {
-      opacity: 0.9;
-    }
-
-    /* --- POPUP PERSONALIZADO --- */
-    #popupOverlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-    }
-    #popupContent {
-      background: var(--azul-forte);
-      color: white;
-      padding: 40px;
-      border-radius: 16px;
-      max-width: 700px;
-      width: 90%;
-      position: relative;
-      text-align: justify;
-      line-height: 1.6;
-    }
-    #popupContent h3 {
-      text-align: center;
-      margin-top: 0;
-      margin-bottom: 25px;
-      font-size: 1.5rem;
-    }
-    #fecharPopup {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: white;
-      color: var(--azul-forte);
-      border: none;
-      border-radius: 6px;
-      padding: 6px 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* --- GRID DE SERVIÇOS --- */
-    .services-nav {
-        background-color: var(--azul-forte);
-        padding: 25px 15px;
-        text-align: center;
-    }
-    .services-title {
-        color: white;
-        margin-bottom: 15px;
-        font-size: 1.4rem;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-    }
-    .grid-container {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        flex-wrap: wrap;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .service-card {
-        background: white;
-        padding: 16px 8px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        transition: transform 0.25s ease;
-        cursor: pointer;
-        text-decoration: none;
-        border-bottom: 4px solid var(--dourado);
-        font-size: 0.9rem;
-        min-width: 120px;
-        flex: 1 1 auto;
-        max-width: 140px;
-    }
-    .service-card:hover { transform: translateY(-3px); background-color: #f9f9f9; }
-    .service-card i { font-size: 1.8rem; color: var(--azul-forte); margin-bottom: 8px; display: block; }
-    .service-card span { color: #333; font-weight: bold; display: block; line-height: 1.2; }
-
-    /* --- LAYOUT ZIGUE-ZAGUE --- */
-    .section-padrao { padding: 60px 20px; border-bottom: 4px solid var(--dourado); }
-    .bg-cinza { background-color: var(--bg-cinza-claro); }
-    .bg-branco { background-color: var(--branco); }
-
-    .container-flex {
-      max-width: 1200px; margin: 0 auto;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 40px;
-    }
-
-    .reverse { flex-direction: row-reverse; }
-
-    .content-text { width: 45%; text-align: justify; }
-    .content-text h2 { 
-      color: var(--azul-forte); 
-      font-size: 1.9rem; 
-      font-weight: 900; 
-      margin-bottom: 20px; 
-      line-height: 1.2;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    .content-text p { 
-      color: #555; 
-      font-size: 1.15rem; 
-      margin-bottom: 25px; 
-      line-height: 1.6; 
-      text-align: justify;
-    }
-    .destaque-azul { color: var(--azul-forte); font-weight: bold; }
-
-    /* VÍDEO */
-    .content-video {
-      width: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    @media (max-width: 900px) {
-        .container-flex, .container-flex.reverse { flex-direction: column; }
-        .content-text, .content-video { width: 100%; }
-        .content-video { margin-top: 30px; }
-        .content-text h2, .content-text p { text-align: center !important; }
-        .content-text p { text-align: justify !important; }
-        .accordion { max-width: 100%; padding: 0 10px; margin: 0 auto 25px !important; }
-        .grid-container { flex-direction: row; justify-content: center; }
-        .btn-wrapper { text-align: center; width: 100%; }
-    }
-
-    /* --- ACORDEÃO --- */
-    .accordion {
-      width: 100%;
-      max-width: 600px;
-      margin-top: 20px;
-    }
-    .accordion-item {
-      border-bottom: 1px solid #ddd;
-    }
-    .accordion-header {
-      width: 100%;
-      padding: 12px 0;
-      background: none;
-      border: none;
-      text-align: left;
-      font-size: 1rem;
-      font-weight: bold;
-      color: var(--azul-forte);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: color 0.3s;
-    }
-    .accordion-header:hover {
-      color: var(--dourado);
-    }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease, padding 0.35s ease;
-      padding: 0;
-      color: #555;
-      font-size: 1rem;
-      line-height: 1.6;
-      text-align: justify; /* ← JUSTIFICADO EM TODOS */
-    }
-    .accordion-item.active .accordion-content {
-      max-height: 300px;
-      padding: 10px 0 20px 0;
-    }
-    .accordion-header i {
-      transition: transform 0.3s ease;
-      color: #777;
-    }
-    .accordion-item.active .accordion-header i {
-      transform: rotate(180deg);
-    }
-
-    /* BOTÕES */
-    .btn { 
-        display: inline-block; 
-        padding: 14px 40px; 
-        border-radius: 8px; 
-        font-weight: 700; 
-        text-decoration: none; 
-        margin-top: 20px; 
-        transition: 0.3s; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
-        cursor: pointer; 
-        font-size: 1.05rem;
-        text-align: center;
-        color: white;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn-azul { background: var(--azul-forte); }
-    .btn-dourado { background: var(--dourado); text-shadow: 1px 1px 0 rgba(0,0,0,0.2); }
-    .btn-zap { background-color: var(--verde-zap-btn); font-size: 1.1rem; border: 2px solid white; }
-    .btn-zap:hover { background-color: #1ebd5a; }
-
-    footer { 
-      background: #111; 
-      color: #fff; 
-      padding: 25px 20px; 
-      text-align: center; 
-      font-size: 1rem; 
-      line-height: 1.5;
-    }
-
-  /* --- MODAL VEÍCULOS 0KM --- */
-.modal-veiculos {
-  display: none; /* ← CORRETO: começa escondido */
-  position: fixed;
-  z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.85);
-  overflow: auto;
-  padding: 20px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Isenções | +10 Anos de Confiança</title>
+<!-- SEO -->
+<meta name="description" content="Global Isenções: +10 anos ajudando PCDs, taxistas e clientes a comprar carro 0km com até 30% de desconto, vender carro usado com pagamento à vista e contratar seguros e renovação de CNH.">
+<meta name="keywords" content="isenção pcd, isenção para taxista, comprar carro 0km, vender carro usado, cnh pcd, seguro auto, global isenções, isenção ipi, isenção icms">
+<meta name="author" content="Global Isenções">
+<!-- Pré-conexão -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<!-- Font Awesome assíncrono -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+media="print"
+onload="this.media='all'">
+<noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</noscript>
+<style>
+/* --- RESET E BASICS --- */
+html { scroll-behavior: smooth; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { font-size: 18px; color: #333; background-color: #fff; }
+/* --- CORES --- */
+:root {
+--azul-forte: #004481;
+--branco: #ffffff;
+--cinza-chumbo: #2c3e50;
+--dourado: #c5a059;
+--laranja-border: #ff6600;
+--cinza-bg-header: #e0e0e0;
+--verde-zap-btn: #25d366;
+--verde-zap-icon: #128C7E;
+--vermelho-tel: #b71c1c;
+--bg-cinza-claro: #f4f6f8;
 }
-    .modal-content-veiculos {
-      background: white;
-      margin: 30px auto;
-      padding: 25px;
-      border-radius: 12px;
-      width: 95%;
-      max-width: 1200px;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    }
-    .close-modal {
-      color: #888;
-      float: right;
-      font-size: 32px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close-modal:hover { color: #000; }
-    .modal-title {
-      text-align: center;
-      color: var(--azul-forte);
-      margin-bottom: 25px;
-      font-size: 1.8rem;
-    }
-
-    /* GRID DE VEÍCULOS */
-    .veiculos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 25px;
-    }
-    .veiculo-card {
-      border: 2px solid #eee;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-    .veiculo-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-    }
-    .veiculo-img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      cursor: pointer;
-      background-color: #f9f9f9;
-    }
-    .veiculo-info {
-      padding: 15px;
-      text-align: center;
-    }
-    .veiculo-nome {
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: var(--azul-forte);
-      margin-bottom: 8px;
-    }
-    .veiculo-preco {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: var(--dourado);
-      margin: 8px 0;
-    }
-    .btn-interesse {
-      background: var(--verde-zap-btn);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-      text-decoration: none;
-      display: inline-block;
-      text-align: center;
-    }
-    .btn-interesse i {
-      margin-right: 6px;
-    }
-
-    /* LIGHTBOX */
-    #lightbox {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 3000;
-      justify-content: center;
-      align-items: center;
-    }
-    #lightbox-img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-      border: 3px solid white;
-      border-radius: 8px;
-    }
-    #close-lightbox {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      color: white;
-      font-size: 40px;
-      cursor: pointer;
-      z-index: 3001;
-    }
-  </style>
+/* --- HEADER --- */
+header { background-color: var(--cinza-bg-header); padding: 20px 0; border-bottom: 6px solid var(--laranja-border); }
+.header-flex { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.header-left { display: flex; align-items: center; }
+.header-left img.logo-icon { height: 90px; width: 90px; margin-right: 15px; }
+.header-title h1 {
+color: var(--azul-forte);
+font-family: 'Times New Roman', Times, serif;
+font-size: 2.6rem;
+font-weight: 900;
+line-height: 1;
+margin-bottom: 5px;
+letter-spacing: 1px;
+}
+.header-title p { color: #555; font-size: 1.05rem; font-weight: 600; }
+.header-middle ul {
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 8px;
+align-items: flex-start;
+}
+.header-middle li {
+font-size: 1.15rem;
+font-weight: bold;
+display: flex;
+align-items: center;
+white-space: nowrap;
+}
+.header-middle i {
+font-size: 1.3rem;
+margin-right: 8px;
+width: 22px;
+text-align: center;
+}
+.tel-fixo { color: var(--vermelho-tel); }
+.tel-zap { color: #000000; }
+.tel-cel { color: var(--vermelho-tel); }
+.header-right { display: flex; align-items: center; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.qr-code-img { height: 90px; width: 90px; object-fit: cover; margin-right: 12px; }
+.qr-text p { font-size: 0.95rem; color: #555; line-height: 1.3; max-width: 160px; }
+@media (max-width: 900px) {
+.header-flex { flex-direction: column; text-align: center; }
+.header-left {
+flex-direction: row;
+justify-content: flex-start;
+width: 100%;
+margin-left: 10px;
+margin-bottom: 15px;
+}
+.header-left img.logo-icon { margin-right: 12px; margin-bottom: 0; }
+.header-title { text-align: left; }
+.header-title h1 { font-size: 2.2rem; margin-bottom: 4px; }
+.header-title p { font-size: 0.95rem; text-align: left; }
+.header-middle { margin-bottom: 20px; align-items: center; }
+.header-right { flex-direction: row; text-align: left; }
+}
+/* --- SOBRE NÓS --- */
+.sobre-nos {
+background-color: var(--azul-forte);
+color: white;
+padding: 35px 20px;
+text-align: center;
+font-size: 1.05rem;
+line-height: 1.6;
+}
+.sobre-nos h2 {
+font-size: 1.6rem;
+margin-bottom: 12px;
+text-transform: uppercase;
+font-family: Arial, sans-serif;
+}
+.sobre-nos p {
+max-width: 850px;
+margin: 0 auto;
+text-align: justify;
+}
+.saiba-mais {
+display: inline-block;
+margin-top: 15px;
+text-decoration: underline;
+color: white;
+font-weight: bold;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.saiba-mais:hover { opacity: 0.9; }
+/* --- POPUP PERSONALIZADO (SOBRE NÓS) --- */
+#popupOverlay {
+display: none;
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: rgba(0, 0, 0, 0.85);
+z-index: 2000;
+justify-content: center;
+align-items: center;
+padding: 15px;
+}
+#popupContent {
+background: var(--azul-forte);
+color: white;
+border-radius: 16px;
+max-width: 700px;
+width: 95%;
+position: relative;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+max-height: 90vh;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+#popupContent .popup-header {
+text-align: center;
+margin: 0;
+padding: 15px 20px;
+font-size: 1.5rem;
+color: var(--dourado);
+font-weight: bold;
+border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+background: rgba(0, 0, 0, 0.1);
+position: relative;
+}
+#fecharPopup {
+position: absolute;
+top: 10px;
+right: 15px;
+background: transparent;
+color: white;
+border: none;
+font-size: 1.8rem;
+font-weight: bold;
+cursor: pointer;
+transition: transform 0.2s;
+z-index: 10;
+padding: 5px 10px;
+line-height: 1;
+}
+#fecharPopup:hover {
+transform: scale(1.1);
+color: var(--dourado);
+}
+#popupContent .popup-body {
+padding: 20px;
+flex: 1;
+overflow-y: auto;
+line-height: 1.6;
+text-align: justify;
+}
+#popupContent .popup-body p {
+margin-bottom: 16px;
+text-align: justify;
+}
+@media (max-width: 768px) {
+#popupContent { width: 95%; max-width: 95%; }
+#popupContent .popup-header { font-size: 1.3rem; padding: 12px 15px; }
+#popupContent .popup-body { padding: 15px; font-size: 0.95rem; }
+#fecharPopup { font-size: 1.5rem; top: 8px; right: 10px; }
+}
+/* --- GRID DE SERVIÇOS --- */
+.services-nav {
+background-color: var(--azul-forte);
+padding: 25px 15px;
+text-align: center;
+}
+.services-title {
+color: white;
+margin-bottom: 15px;
+font-size: 1.4rem;
+text-transform: uppercase;
+font-family: Arial, sans-serif;
+}
+.grid-container {
+display: flex;
+justify-content: center;
+gap: 12px;
+flex-wrap: wrap;
+max-width: 1200px;
+margin: 0 auto;
+}
+.service-card {
+background: white;
+padding: 16px 8px;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+transition: transform 0.25s ease;
+cursor: pointer;
+text-decoration: none;
+border-bottom: 4px solid var(--dourado);
+font-size: 0.9rem;
+min-width: 120px;
+flex: 1 1 auto;
+max-width: 140px;
+}
+.service-card:hover { transform: translateY(-3px); background-color: #f9f9f9; }
+.service-card i { font-size: 1.8rem; color: var(--azul-forte); margin-bottom: 8px; display: block; }
+.service-card span { color: #333; font-weight: bold; display: block; line-height: 1.2; }
+/* --- LAYOUT ZIGUE-ZAGUE --- */
+.section-padrao { padding: 60px 20px; border-bottom: 4px solid var(--dourado); }
+.bg-cinza { background-color: var(--bg-cinza-claro); }
+.bg-branco { background-color: var(--branco); }
+.container-flex {
+max-width: 1200px; margin: 0 auto;
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 40px;
+}
+.reverse { flex-direction: row-reverse; }
+.content-text { width: 45%; text-align: justify; }
+.content-text h2 {
+color: var(--azul-forte);
+font-size: 1.9rem;
+font-weight: 900;
+margin-bottom: 20px;
+line-height: 1.2;
+font-family: Arial, sans-serif;
+text-align: center;
+}
+.content-text p {
+color: #555;
+font-size: 1.15rem;
+margin-bottom: 25px;
+line-height: 1.6;
+text-align: justify;
+}
+.destaque-azul { color: var(--azul-forte); font-weight: bold; }
+.video-placeholder {
+width: 100%;
+max-width: 500px;
+border-radius: 20px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+border: 4px solid var(--dourado);
+cursor: pointer;
+position: relative;
+overflow: hidden;
+}
+.video-placeholder img {
+width: 100%;
+display: block;
+}
+.play-button {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: rgba(0,0,0,0.6);
+width: 60px;
+height: 60px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-size: 24px;
+font-weight: bold;
+}
+@media (max-width: 900px) {
+.container-flex, .container-flex.reverse { flex-direction: column; }
+.content-text, .content-video { width: 100%; }
+.content-video { margin-top: 30px; }
+.content-text h2, .content-text p { text-align: center !important; }
+.content-text p { text-align: justify !important; }
+.accordion { max-width: 100%; padding: 0 10px; margin: 0 auto 25px !important; }
+.grid-container { flex-direction: row; justify-content: center; }
+.btn-wrapper { text-align: center; width: 100%; }
+}
+/* --- ACORDEÃO --- */
+.accordion {
+width: 100%;
+max-width: 600px;
+margin-top: 20px;
+}
+.accordion-item {
+border-bottom: 1px solid #ddd;
+}
+.accordion-header {
+width: 100%;
+padding: 12px 0;
+background: none;
+border: none;
+text-align: left;
+font-size: 1rem;
+font-weight: bold;
+color: var(--azul-forte);
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+transition: color 0.3s;
+}
+.accordion-header:hover { color: var(--dourado); }
+.accordion-content {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.35s ease, padding 0.35s ease;
+padding: 0;
+color: #555;
+font-size: 1rem;
+line-height: 1.6;
+text-align: justify;
+}
+.accordion-item.active .accordion-content {
+max-height: 300px;
+padding: 10px 0 20px 0;
+}
+.accordion-header i {
+transition: transform 0.3s ease;
+color: #777;
+}
+.accordion-item.active .accordion-header i {
+transform: rotate(180deg);
+}
+/* BOTÕES */
+.btn {
+display: inline-block;
+padding: 14px 40px;
+border-radius: 8px;
+font-weight: 700;
+text-decoration: none;
+margin-top: 20px;
+transition: 0.3s;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+cursor: pointer;
+font-size: 1.05rem;
+text-align: center;
+color: white;
+}
+.btn:active { transform: scale(0.98); }
+.btn-azul { background: var(--azul-forte); }
+.btn-dourado { background: var(--dourado); text-shadow: 1px 1px 0 rgba(0,0,0,0.2); }
+.btn-zap { background-color: var(--verde-zap-btn); font-size: 1.1rem; border: 2px solid white; }
+.btn-zap:hover { background-color: #1ebd5a; }
+footer {
+background: #111;
+color: #fff;
+padding: 25px 20px;
+text-align: center;
+font-size: 1rem;
+line-height: 1.5;
+}
+/* --- MODAL VEÍCULOS 0KM --- */
+.modal-veiculos {
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0; top: 0;
+width: 100%; height: 100%;
+background-color: rgba(0,0,0,0.85);
+overflow: auto;
+padding: 20px;
+}
+.modal-content-veiculos {
+background: white;
+margin: 30px auto;
+padding: 25px;
+border-radius: 12px;
+width: 95%;
+max-width: 1200px;
+position: relative;
+box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+.close-modal {
+color: #888;
+float: right;
+font-size: 32px;
+font-weight: bold;
+cursor: pointer;
+}
+.close-modal:hover { color: #000; }
+.modal-title {
+text-align: center;
+color: var(--azul-forte);
+margin-bottom: 25px;
+font-size: 1.8rem;
+}
+/* GRID DE VEÍCULOS */
+.veiculos-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 25px;
+}
+.veiculo-card {
+border: 2px solid #eee;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+transition: transform 0.25s, box-shadow 0.25s;
+}
+.veiculo-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+.veiculo-img {
+width: 100%;
+height: 160px;
+object-fit: cover;
+cursor: pointer;
+background-color: #f9f9f9;
+}
+.veiculo-info {
+padding: 15px;
+text-align: center;
+}
+.veiculo-nome {
+font-weight: bold;
+font-size: 1.1rem;
+color: var(--azul-forte);
+margin-bottom: 8px;
+}
+.veiculo-preco {
+font-size: 1.3rem;
+font-weight: bold;
+color: var(--dourado);
+margin: 8px 0;
+}
+.btn-interesse {
+background: var(--verde-zap-btn);
+color: white;
+border: none;
+padding: 8px 16px;
+border-radius: 6px;
+font-weight: bold;
+cursor: pointer;
+width: 100%;
+margin-top: 10px;
+text-decoration: none;
+display: inline-block;
+text-align: center;
+}
+.btn-interesse i {
+margin-right: 6px;
+}
+/* LIGHTBOX */
+#lightbox {
+display: none;
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: rgba(0,0,0,0.95);
+z-index: 3000;
+justify-content: center;
+align-items: center;
+}
+#lightbox-img {
+max-width: 90%;
+max-height: 90%;
+object-fit: contain;
+border: 3px solid white;
+border-radius: 8px;
+}
+#close-lightbox {
+position: absolute;
+top: 20px;
+right: 30px;
+color: white;
+font-size: 40px;
+cursor: pointer;
+z-index: 3001;
+}
+/* --- POPUP PATOLOGIAS PCD --- */
+.popup-patologias {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.85);
+z-index: 2500;
+justify-content: center;
+align-items: center;
+padding: 15px;
+}
+.popup-patologias .popup-content {
+background: var(--azul-forte);
+color: white;
+border-radius: 16px;
+max-width: 800px;
+width: 95%;
+position: relative;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+max-height: 90vh;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+.popup-patologias .popup-header {
+text-align: center;
+margin: 0;
+padding: 15px 20px;
+font-size: 1.4rem;
+color: var(--dourado);
+font-weight: bold;
+border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+background: rgba(0, 0, 0, 0.1);
+position: relative;
+}
+.popup-patologias .close-btn {
+position: absolute;
+top: 10px;
+right: 15px;
+background: transparent;
+color: white;
+border: none;
+font-size: 1.8rem;
+font-weight: bold;
+cursor: pointer;
+transition: transform 0.2s;
+z-index: 10;
+padding: 5px 10px;
+line-height: 1;
+}
+.popup-patologias .close-btn:hover {
+transform: scale(1.1);
+color: var(--dourado);
+}
+.popup-patologias .popup-body {
+padding: 20px;
+flex: 1;
+overflow-y: auto;
+line-height: 1.6;
+text-align: justify;
+}
+.popup-patologias .patologia-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+gap: 12px;
+margin-top: 15px;
+}
+.popup-patologias .patologia-item {
+padding: 6px 0;
+font-size: 1rem;
+border-bottom: 1px solid rgba(255,255,255,0.15);
+display: flex;
+align-items: flex-start;
+}
+.popup-patologias .patologia-item::before {
+content: "•";
+color: var(--dourado);
+margin-right: 8px;
+font-weight: bold;
+font-size: 1.2rem;
+}
+.popup-patologias .popup-footer {
+padding: 15px 20px;
+text-align: center;
+border-top: 2px solid rgba(255, 255, 255, 0.1);
+background: rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+.popup-patologias .popup-content { width: 95%; max-width: 95%; }
+.popup-patologias .popup-header { font-size: 1.2rem; padding: 10px 15px; }
+.popup-patologias .popup-body { padding: 15px; font-size: 0.95rem; }
+.popup-patologias .patologia-grid { grid-template-columns: 1fr; gap: 8px; }
+.popup-patologias .close-btn { font-size: 1.5rem; top: 8px; right: 10px; }
+}
+</style>
 </head>
 <body>
+<button onclick="subirTopo()" id="btnTopo" aria-label="Voltar ao topo" style="display:none;position:fixed;bottom:20px;right:20px;z-index:99;font-size:20px;border:none;outline:none;background-color:var(--azul-forte);color:white;cursor:pointer;padding:15px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+<i class="fas fa-arrow-up"></i>
+</button>
 
-  <button onclick="subirTopo()" id="btnTopo" aria-label="Voltar ao topo" style="display:none;position:fixed;bottom:20px;right:20px;z-index:99;font-size:20px;border:none;outline:none;background-color:var(--azul-forte);color:white;cursor:pointer;padding:15px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,0.3);transition:0.3s;">
-    <i class="fas fa-arrow-up" aria-hidden="true"></i>
-  </button>
+<header id="inicio">
+<div class="header-flex">
+<div class="header-left">
+<img src="https://static.wixstatic.com/media/ca7734_906bf0fe829149acac36f061a7ddf691~mv2.png" alt="Logo Global Isenções" class="logo-icon" width="90" height="90">
+<div class="header-title">
+<h1>GLOBAL</h1>
+<p>Assessoria Completa em<br>Isenções, Seguros e muito mais!</p>
+</div>
+</div>
+<div class="header-middle">
+<ul>
+<li class="tel-fixo"><i class="fas fa-phone-alt"></i> (11) 4281-0102</li>
+<li class="tel-zap"><i class="fab fa-whatsapp" style="color: var(--verde-zap-icon);"></i> (11) 99835-6514</li>
+<li class="tel-cel"><i class="fas fa-mobile-alt"></i> (11) 99169-1350</li>
+</ul>
+</div>
+<div class="header-right">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR Code para WhatsApp" class="qr-code-img" width="90" height="90">
+<div class="qr-text">
+<p>Vamos conversar via WhatsApp?</p>
+<p>Só apontar a câmera do seu celular.</p>
+</div>
+</div>
+</div>
+</header>
 
-  <header id="inicio">
-    <div class="header-flex">
-        <div class="header-left">
-            <img src="https://static.wixstatic.com/media/ca7734_906bf0fe829149acac36f061a7ddf691~mv2.png/v1/fill/w_101,h_101,al_c,q_85/ca7734_906bf0fe829149acac36f061a7ddf691~mv2.png" alt="Logo Global Isenções" class="logo-icon">
-            <div class="header-title">
-                <h1>GLOBAL</h1>
-                <p>Assessoria Completa em<br>Isenções, Seguros e muito mais!</p>
-            </div>
-        </div>
-        <div class="header-middle">
-            <ul>
-                <li class="tel-fixo"><i class="fas fa-phone-alt"></i> (11) 4281-0102</li>
-                <li class="tel-zap"><i class="fab fa-whatsapp" style="color: var(--verde-zap-icon);"></i> (11) 99835-6514</li>
-                <li class="tel-cel"><i class="fas fa-mobile-alt"></i> (11) 99169-1350</li>
-            </ul>
-        </div>
-        <div class="header-right">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR Code para WhatsApp" class="qr-code-img">
-            <div class="qr-text">
-                <p>Vamos conversar via WhatsApp?</p>
-                <p>Só apontar a câmera do seu celular.</p>
-            </div>
-        </div>
-    </div>
-  </header>
+<main>
+<section class="sobre-nos">
+<h2>+10 Anos de Confiança e Transparência</h2>
+<p>A Global Isenções atua há mais de 10 anos no mercado, sendo referência em resultados no segmento de isenções e serviços automotivos. Nossa missão é simplificar e garantir que cada cliente aproveite seus direitos com segurança e tranquilidade, <strong>sem se preocupar com burocracias</strong>.</p>
+<span class="saiba-mais" id="abrirPopup">Saiba Mais</span>
+</section>
 
-  <section class="sobre-nos">
-    <h2>+10 Anos de Confiança e Transparência</h2>
-    <p>A Global Isenções atua há mais de 10 anos no mercado, sendo referência em resultados no segmento de isenções e serviços automotivos. Nossa missão é simplificar e garantir que cada cliente aproveite seus direitos com segurança e tranquilidade, <strong>sem se preocupar com burocracias</strong>.</p>
-    <span class="saiba-mais" id="abrirPopup">Saiba Mais</span>
-  </section>
+<!-- Popup Sobre Nós -->
+<div id="popupOverlay">
+<div id="popupContent">
+<div class="popup-header">
+Sobre a Global Isenções
+<button id="fecharPopup">×</button>
+</div>
+<div class="popup-body">
+<p>A Global Isenções atua há mais de 10 anos no mercado, sendo referência em confiança, transparência e resultados no segmento de isenções e serviços automotivos.</p>
+<p>Oferecemos soluções completas, como a troca da CNH para PCD, obtenção de isenções fiscais para pessoas com deficiência e taxistas, orientação na escolha do seguro, compra do veículo usado e apoio na venda do carro novo.</p>
+<p>Também cuidamos de processos mais complexos, como suspensão ou cassação da CNH, sempre com agilidade e eficiência. Nossa missão é simplificar e garantir que cada cliente aproveite seus direitos e benefícios com segurança e tranquilidade, sem se preocupar com burocracias.</p>
+</div>
+</div>
+</div>
 
-  <!-- POPUP PERSONALIZADO -->
-  <div id="popupOverlay">
-    <div id="popupContent">
-      <button id="fecharPopup">Fechar</button>
-      <h3>Sobre a Global Isenções</h3>
-      <p>A Global Isenções atua há mais de 10 anos no mercado, sendo referência em confiança, transparência e resultados no segmento de isenções e serviços automotivos.</p>
-      <p>Oferecemos soluções completas, como a troca da CNH para PCD, obtenção de isenções fiscais para pessoas com deficiência e taxistas, orientação na escolha do seguro, compra do veículo usado e apoio na venda do carro novo.</p>
-      <p>Também cuidamos de processos mais complexos, como suspensão ou cassação da CNH, sempre com agilidade e eficiência. Nossa missão é simplificar e garantir que cada cliente aproveite seus direitos e benefícios com segurança e tranquilidade, sem se preocupar com burocracias.</p>
-    </div>
-  </div>
+<section class="services-nav">
+<h3 class="services-title">Nossos Serviços</h3>
+<div class="grid-container">
+<a href="#isencoes" class="service-card">
+<i class="fas fa-wheelchair"></i>
+<span>Isenções PCD e Taxi</span>
+</a>
+<a href="#seguros" class="service-card">
+<i class="fas fa-shield-alt"></i>
+<span>Seguros em geral</span>
+</a>
+<a href="#veiculos" class="service-card">
+<i class="fas fa-car"></i>
+<span>Veículos 0km</span>
+</a>
+<a href="#venda" class="service-card">
+<i class="fas fa-hand-holding-usd"></i>
+<span>Compra de Veículos usados</span>
+</a>
+</div>
+</section>
 
-  <section class="services-nav">
-    <h3 class="services-title">Nossos Serviços</h3>
-    <div class="grid-container">
-        <a href="#isencoes" class="service-card">
-            <i class="fas fa-wheelchair"></i>
-            <span>Isenções PCD e Taxi</span>
-        </a>
-        <a href="#seguros" class="service-card">
-            <i class="fas fa-shield-alt"></i>
-            <span>Seguros em geral</span>
-        </a>
-        <a href="#veiculos" class="service-card">
-            <i class="fas fa-car"></i>
-            <span>Veículos 0km</span>
-        </a>
-        <a href="#venda" class="service-card">
-            <i class="fas fa-hand-holding-usd"></i>
-            <span>Compra de Veículos usados</span>
-        </a>
-    </div>
-  </section>
+<!-- SEÇÃO ISENÇÕES -->
+<section class="section-padrao bg-cinza" id="isencoes">
+<div class="container-flex">
+<div class="content-text">
+<h2>Isenções de Impostos<br>para PCD e Taxi</h2>
+<p>Obtenha isenções de IPI, ICMS, IPVA e IOF para PCD ou isenção de IPI para taxistas. Nós cuidamos de todo o processo, do laudo ao auxílio na compra do veículo novo.</p>
+<div class="accordion">
+<div class="accordion-item">
+<button class="accordion-header"><span>Quem tem direito à isenção PCD?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Diversas patologias podem lhe garantir o direito às isenções. Abaixo listaremos algumas delas, mas se porventura a sua não está relacionada, nos consulte — analisaremos especificamente seu caso!</p>
+<button id="btn-saiba-mais-pcd" class="btn btn-azul" style="margin-top:15px;padding:10px 25px;font-size:1rem;">
+<i class="fas fa-info-circle"></i> Saiba Mais
+</button>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Isenção para taxistas?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Sim! Motoristas com alvará ativo e CNH definitiva têm direito à isenção de IPI na compra de veículos novos.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Troca da CNH normal para PCD</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Realizamos todo o processo: exames médicos, laudos, agendamento de provas, enfim, todo auxílio no seu processo até a compra do seu carro novo.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Renovação da CNH Normal ou PCD</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Providenciamos a renovação da sua CNH seja ela normal ou PCD sem nenhuma complicação, entre em contato para saber mais.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Suspensão ou cassação da CNH?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Regularizamos a sua situação, seja CNH suspensa ou cassada, temos a solução, entre em contato para saber mais.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="content-video">
+<video controls autoplay muted loop playsinline
+poster="https://static.wixstatic.com/media/ca7734_340dde7f8e5b40ac89c90f673449fd2b~mv2.jpg"
+style="width:100%;max-width:500px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);border:4px solid var(--dourado);">
+<source src="https://video.wixstatic.com/video/ca7734_e58356b589a746588e405cdf55774375/720p/mp4/file.mp4" type="video/mp4">
+Seu navegador não suporta vídeos HTML5.
+</video>
+</div>
+</div>
+<div style="text-align:center;margin-top:30px;">
+<a href="https://wa.me/5511998356514?text=Olá, vim pelo site e quero minha proposta em 5 minutos" target="_blank" class="btn btn-zap">
+<i class="fab fa-whatsapp"></i> SIM, QUERO MINHA PROPOSTA EM 5 MINUTOS
+</a>
+</div>
+</section>
 
-  <!-- SEÇÃO ISENÇÕES -->
-  <section class="section-padrao bg-cinza" id="isencoes">
-    <div class="container-flex">
-        <div class="content-text">
-            <h2>Isenções de Impostos<br>para PCD e Taxi</h2>
-            <p>Obtenha isenções de IPI, ICMS, IPVA e IOF para PCD ou isenção de IPI para taxistas. Nós cuidamos de todo o processo, do laudo ao auxílio na compra do veículo novo.</p>
-            
-            <div class="accordion">
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Quem tem direito à isenção PCD?</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Diversas patologias dão direito às isenções, entre em contato que verificamos seu direito sem custos e sem compromisso.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Isenção para taxistas?</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Sim! Motoristas com alvará ativo e CNH definitiva têm direito à isenção de IPI na compra de veículos novos.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Troca ou renovação da CNH PCD?</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Realizamos todo o processo: exames médicos, laudos, agendamento de provas, enfim, todo auxílio no seu processo até a compra do seu carro novo.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Suspensão ou cassação da CNH?</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Regularizamos a sua situação, seja CNH suspensa ou cassada, vamos regularizar sua situação.</p>
-                </div>
-              </div>
-            </div>
-        </div>
-        <div class="content-video">
-          <video 
-            controls 
-            autoplay 
-            muted 
-            loop 
-            playsinline 
-            poster="https://static.wixstatic.com/media/ca7734_340dde7f8e5b40ac89c90f673449fd2b~mv2.jpg/v1/fill/w_980,h_411,al_c,q_85/ca7734_340dde7f8e5b40ac89c90f673449fd2b~mv2.jpg"
-            style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 4px solid var(--dourado);">
-            <source src="https://video.wixstatic.com/video/ca7734_e58356b589a746588e405cdf55774375/720p/mp4/file.mp4" type="video/mp4">
-            Seu navegador não suporta vídeos HTML5.
-          </video>
-        </div>
-    </div>
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="https://wa.me/5511998356514?text=Olá, vim pelo site e quero minha avaliação gratuita" target="_blank" class="btn btn-zap">
-            <i class="fab fa-whatsapp"></i> AVALIAÇÃO GRATUITA
-        </a>
-    </div>
-  </section>
+<!-- SEÇÃO SEGUROS -->
+<section class="section-padrao bg-branco" id="seguros">
+<div class="container-flex reverse">
+<div class="content-text">
+<h2>Seguros em Geral</h2>
+<p>Auto, moto, residencial e plano de saúde — com cobertura completa e preço justo, sem complicações.</p>
+<div class="accordion">
+<div class="accordion-item">
+<button class="accordion-header"><span>Seguro Auto e Moto</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Cobertura 100% FIPE, assistência 24h, carro reserva e mais. Trabalhamos com as melhores seguradoras do Brasil.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Seguro Residencial</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Proteja sua casa contra incêndio, roubo, alagamento, vendaval e muito mais. Solicite uma cotação.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Plano de Saúde</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Planos individuais, familiares e empresariais. Planos com acomodações em quartos ou enfermarias, com co-participação ou não, você escolhe. Faça uma cotação.</p>
+</div>
+</div>
+</div>
+<div style="text-align:center;margin-top:25px;">
+<a href="https://wa.me/5511991691350?text=Olá, quero falar com um especialista agora sobre seguros" target="_blank" class="btn btn-azul">
+FALAR COM ESPECIALISTA AGORA
+</a>
+</div>
+</div>
+<div class="content-video">
+<video controls autoplay muted loop playsinline
+poster="https://static.wixstatic.com/media/ca7734_c8096d8d6281443a9d384d43ec99a254~mv2.jpg"
+style="width:100%;max-width:500px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);border:4px solid var(--dourado);">
+<source src="https://video.wixstatic.com/video/ca7734_efbb32647d3e4a8188455ca85debcef4/720p/mp4/file.mp4" type="video/mp4">
+Seu navegador não suporta vídeos HTML5.
+</video>
+</div>
+</div>
+</section>
 
-  <!-- SEÇÃO SEGUROS -->
-  <section class="section-padrao bg-branco" id="seguros">
-    <div class="container-flex reverse">
-        <div class="content-text">
-            <h2>Seguros em Geral</h2>
-            <p>Auto, moto, residencial e plano de saúde — com cobertura completa e preço justo, sem complicações.</p>
-            
-            <div class="accordion">
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Seguro Auto e Moto</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Cobertura 100% FIPE, assistência 24h, carro reserva e mais. Trabalhamos com as melhores seguradoras do Brasil.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Seguro Residencial</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Proteja sua casa contra incêndio, roubo, alagamento e responsabilidade civil. A partir de R$20/mês.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Plano de Saúde</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Planos individuais, familiares e empresariais com rede credenciada em todo o Brasil.</p>
-                </div>
-              </div>
-            </div>
+<!-- SEÇÃO VEÍCULOS 0KM -->
+<section class="section-padrao bg-cinza" id="veiculos">
+<div class="container-flex">
+<div class="content-text">
+<h2>Compre seu Veículo<br>0km sem impostos</h2>
+<p>Até <span class="destaque-azul">30% de desconto</span> na compra do seu carro novo, com isenção de IPI, ICMS, IPVA, rodízio municipal, etc — tudo com nossa assessoria completa do início ao fim do processo.</p>
+<div class="accordion">
+<div class="accordion-item">
+<button class="accordion-header"><span>Como funciona?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Escolha o modelo que pretende comprar, vamos pedir as isenções para que você obtenha todos descontos para comprar o carro dos seus sonhos.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Quais marcas?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Todas: Fiat, VW, Chevrolet, Toyota, Hyundai, Jeep, Renault, Honda, Nissan e mais.</p>
+</div>
+</div>
+</div>
+<div style="text-align:center;margin-top:25px;">
+<button type="button" class="btn btn-azul" id="btn-veiculos-0km">
+VEJA NOSSOS CARROS 0KM →
+</button>
+</div>
+</div>
+<div class="content-video">
+<video controls autoplay muted loop playsinline
+poster="https://static.wixstatic.com/media/ca7734_c7ded79dd80444c79d6436d1708828ae~mv2.png"
+style="width:100%;max-width:500px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);border:4px solid var(--dourado);">
+<source src="https://video.wixstatic.com/video/ca7734_d9d54cab7f2c4feb9959884f19679f14/720p/mp4/file.mp4" type="video/mp4">
+Seu navegador não suporta vídeos HTML5.
+</video>
+</div>
+</div>
+</section>
 
-            <div style="text-align: center; margin-top: 25px;">
-              <a href="https://wa.me/5511998356514?text=Olá, quero orientação sobre seguros" target="_blank" class="btn btn-azul">ORIENTAÇÃO GRATUITA</a>
-            </div>
-        </div>
-        <div class="content-video">
-          <video 
-            controls 
-            autoplay 
-            muted 
-            loop 
-            playsinline 
-            poster="https://static.wixstatic.com/media/ca7734_c8096d8d6281443a9d384d43ec99a254~mv2.jpg/v1/fill/w_980,h_408,al_c,q_85/ca7734_c8096d8d6281443a9d384d43ec99a254~mv2.jpg"
-            style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 4px solid var(--dourado);">
-            <source src="https://video.wixstatic.com/video/ca7734_fc74f4abf43c4c92b0cf3553557d92a3/720p/mp4/file.mp4" type="video/mp4">
-            Seu navegador não suporta vídeos HTML5.
-          </video>
-        </div>
-    </div>
-  </section>
+<!-- SEÇÃO COMPRA DE USADO -->
+<section class="section-padrao bg-branco" id="venda">
+<div class="container-flex reverse">
+<div class="content-text">
+<h2>Compramos seu<br>Carro Usado</h2>
+<p>Quer trocar de carro? <strong>Nós compramos seu veículo usado</strong> com pagamento à vista, avaliação justa e sem burocracia.</p>
+<div class="accordion">
+<div class="accordion-item">
+<button class="accordion-header"><span>Como é feita a avaliação?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Com base na tabela FIPE e no estado real do veículo. Envie fotos ou agende uma avaliação presencial.</p>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header"><span>Pagamento à vista?</span> <i class="fas fa-chevron-down"></i></button>
+<div class="accordion-content">
+<p>Sim! O pagamento é à vista, resolvemos tudo na hora, sem enrolação.</p>
+</div>
+</div>
+</div>
+<div style="text-align:center;margin-top:25px;">
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSfpWx_3qa60_MmFc2KC0ZTauIamo-M5rfnXGpprxtQc5vyk1w/viewform?usp=dialog"
+target="_blank" class="btn btn-azul" aria-label="Quero dinheiro hoje — proposta em 5 minutos, sem compromisso">
+QUERO DINHEIRO HOJE →
+</a>
+</div>
+</div>
+<div class="content-video">
+<video controls autoplay muted loop playsinline
+poster="https://static.wixstatic.com/media/ca7734_aea90958a3f44a38813a7fb7e33e4be8~mv2.jpg"
+style="width:100%;max-width:500px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);border:4px solid var(--dourado);">
+<source src="https://video.wixstatic.com/video/ca7734_846591f3f0be4898934bf6e6de0dc493/720p/mp4/file.mp4" type="video/mp4">
+Seu navegador não suporta vídeos HTML5.
+</video>
+</div>
+</div>
+</section>
 
-  <!-- SEÇÃO CARRO 0KM -->
-  <section class="section-padrao bg-cinza" id="veiculos">
-    <div class="container-flex">
-      <div class="content-text">
-        <h2>Compre seu Veículo<br>0km sem impostos</h2>
-        <p>Até <span class="destaque-azul">30% de desconto</span> na compra do seu carro novo, com isenção de IPI, ICMS, IPVA, rodízio municipal, etc — tudo com nossa assessoria completa do início ao fim do processo.</p>
-        
-        <div class="accordion">
-          <div class="accordion-item">
-            <button class="accordion-header"><span>Como funciona?</span> <i class="fas fa-chevron-down"></i></button>
-            <div class="accordion-content">
-              <p>Escolha o modelo, usamos sua isenção para garantir o desconto e acompanhamos até a entrega na concessionária.</p>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <button class="accordion-header"><span>Quais marcas?</span> <i class="fas fa-chevron-down"></i></button>
-            <div class="accordion-content">
-              <p>Todas: Fiat, VW, Chevrolet, Toyota, Hyundai, Jeep, Ford, Renault, Honda, Nissan e mais.</p>
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 25px;">
-          <button type="button" class="btn btn-azul" id="btn-veiculos-0km">
-            COMPRE SEU 0KM
-          </button>
-        </div>
-      </div>
-      <div class="content-video">
-        <video 
-          controls 
-          autoplay 
-          muted 
-          loop 
-          playsinline 
-          poster="https://static.wixstatic.com/media/ca7734_c7ded79dd80444c79d6436d1708828ae~mv2.png/v1/fill/w_980,h_404,al_t,q_90/ca7734_c7ded79dd80444c79d6436d1708828ae~mv2.png"
-          style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 4px solid var(--dourado);">
-          <source src="https://video.wixstatic.com/video/ca7734_d9d54cab7f2c4feb9959884f19679f14/720p/mp4/file.mp4" type="video/mp4">
-          Seu navegador não suporta vídeos HTML5.
-        </video>
-      </div>
-    </div>
-  </section>
-
-  <!-- SEÇÃO VENDA DO USADO -->
-  <section class="section-padrao bg-branco" id="venda">
-    <div class="container-flex reverse">
-        <div class="content-text">
-            <h2>Vendemos seu<br>Carro Usado</h2>
-            <p>Quer trocar de carro? <strong>Nós compramos seu veículo usado</strong> com pagamento à vista, avaliação justa e sem burocracia.</p>
-            
-            <div class="accordion">
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Como é feita a avaliação?</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Com base na tabela FIPE e no estado real do veículo. Envie fotos ou agende uma avaliação presencial.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header"><span>Pagamento à vista?</span> <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
-                  <p>Sim! Em dinheiro ou transferência no ato da entrega da documentação.</p>
-                </div>
-              </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 25px;">
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSfpWx_3qa60_MmFc2KC0ZTauIamo-M5rfnXGpprxtQc5vyk1w/viewform?usp=dialog" 
-                 target="_blank" 
-                 class="btn btn-azul">
-                VENDER MEU CARRO
-              </a>
-            </div>
-        </div>
-        <div class="content-video">
-          <video 
-            controls 
-            autoplay 
-            muted 
-            loop 
-            playsinline 
-            poster="https://static.wixstatic.com/media/ca7734_aea90958a3f44a38813a7fb7e33e4be8~mv2.jpg/v1/fill/w_977,h_407,al_c,q_85/ca7734_aea90958a3f44a38813a7fb7e33e4be8~mv2.jpg"
-            style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 4px solid var(--dourado);">
-            <source src="https://video.wixstatic.com/video/ca7734_846591f3f0be4898934bf6e6de0dc493/720p/mp4/file.mp4" type="video/mp4">
-            Seu navegador não suporta vídeos HTML5.
-          </video>
-        </div>
-    </div>
-  </section>
-
-  <!-- MODAL DE VEÍCULOS 0KM -->
-  <div id="modalVeiculos" class="modal-veiculos">
-    <div class="modal-content-veiculos">
-      <span class="close-modal">&times;</span>
-      <h2 class="modal-title">Veículos Novos com Desconto</h2>
-      <div class="veiculos-grid">
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_a0cdde8168734712a0d9345e52fff022~mv2.webp" alt="VW T-Cross" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_a0cdde8168734712a0d9345e52fff022~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">VW T-Cross Comfortline 2026</div>
-            <div class="veiculo-preco">R$ 94.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o VW T-Cross Comfortline 2026 por R$ 94.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_34121fba28cb43c6b600e09f047ba7e8~mv2.jpg" alt="VW Polo" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_34121fba28cb43c6b600e09f047ba7e8~mv2.jpg">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">VW Polo Highline 2026</div>
-            <div class="veiculo-preco">R$ 89.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o VW Polo Highline 2026 por R$ 89.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_5d5ce1f226b44e938af6534ddcb5e5dc~mv2.webp" alt="Peugeot 208 GT" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_5d5ce1f226b44e938af6534ddcb5e5dc~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Peugeot 208 GT 2024</div>
-            <div class="veiculo-preco">R$ 86.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Peugeot 208 GT 2024 por R$ 86.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_216e132b9ac544a09b977662dcb476ea~mv2.webp" alt="Nissan Kicks" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_216e132b9ac544a09b977662dcb476ea~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Nissan Kicks Platinum 2026</div>
-            <div class="veiculo-preco">R$ 119.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Nissan Kicks Platinum 2026 por R$ 119.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_3f6ede1bf920414b807d65ffab6290a5~mv2.webp" alt="Jeep Renegade" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_3f6ede1bf920414b807d65ffab6290a5~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Jeep Renegade</div>
-            <div class="veiculo-preco">R$ 139.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Jeep Renegade por R$ 139.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_3e4279f9ffd44712a6527f55bf9c08f0~mv2.webp" alt="Renault Kardian" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_3e4279f9ffd44712a6527f55bf9c08f0~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Renault Kardian</div>
-            <div class="veiculo-preco">R$ 79.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Renault Kardian por R$ 79.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_32df57418b2143b68a26a8b89a5b3920~mv2.avif" alt="Fiat Cronos" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_32df57418b2143b68a26a8b89a5b3920~mv2.avif">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Fiat Cronos</div>
-            <div class="veiculo-preco">R$ 76.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Fiat Cronos por R$ 76.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_398186bf35ce40b19a54e8bc5e4405df~mv2.png" alt="Fiat Argo" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_398186bf35ce40b19a54e8bc5e4405df~mv2.png">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Fiat Argo</div>
-            <div class="veiculo-preco">R$ 74.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Fiat Argo por R$ 74.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_2f60488ccc0d4906b1c63e322f402d7c~mv2.webp" alt="Fiat Pulse" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_2f60488ccc0d4906b1c63e322f402d7c~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Fiat Pulse</div>
-            <div class="veiculo-preco">R$ 90.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Fiat Pulse por R$ 90.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_d7f403208a484e08b5d2755374d389bc~mv2.avif" alt="Fiat Fastback" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_d7f403208a484e08b5d2755374d389bc~mv2.avif">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Fiat Fastback</div>
-            <div class="veiculo-preco">R$ 109.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Fiat Fastback por R$ 109.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_826682670f8241b4bf2d1340c2aa36a5~mv2.webp" alt="Citroën C3" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_826682670f8241b4bf2d1340c2aa36a5~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Citroën C3</div>
-            <div class="veiculo-preco">R$ 72.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Citroën C3 por R$ 72.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_3116b29d5d6e4cf284b8966ee9bf30d1~mv2.webp" alt="Citroën Basalt" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_3116b29d5d6e4cf284b8966ee9bf30d1~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Citroën Basalt</div>
-            <div class="veiculo-preco">R$ 98.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Citroën Basalt por R$ 98.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_4eecf03b22a94e6e951fa7894e36971c~mv2.jpg" alt="Citroën Aircross" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_4eecf03b22a94e6e951fa7894e36971c~mv2.jpg">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Citroën Aircross</div>
-            <div class="veiculo-preco">R$ 114.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Citroën Aircross por R$ 114.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-        <div class="veiculo-card">
-          <img src="https://static.wixstatic.com/media/ca7734_658bd79052a34b7ba685f6e5f3a433f5~mv2.webp" alt="Honda City" class="veiculo-img" data-large="https://static.wixstatic.com/media/ca7734_658bd79052a34b7ba685f6e5f3a433f5~mv2.webp">
-          <div class="veiculo-info">
-            <div class="veiculo-nome">Honda City</div>
-            <div class="veiculo-preco">R$ 104.990</div>
-            <a href="https://wa.me/5511998356514?text=Olá, quero o Honda City por R$ 104.990" target="_blank" class="btn-interesse">
-              <i class="fab fa-whatsapp"></i> Quero esse carro
-            </a>
-          </div>
-        </div>
-      </div>
+<!-- MODAL VEÍCULOS 0KM (13 veículos completos) -->
+<div id="modalVeiculos" class="modal-veiculos">
+<div class="modal-content-veiculos">
+<span class="close-modal">&times;</span>
+<h2 class="modal-title">Veículos 0km com até 30% OFF + Isenções</h2>
+<div class="veiculos-grid">
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_a0cdde8168734712a0d9345e52fff022~mv2.webp"
+         alt="VW T-Cross Comfortline"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_a0cdde8168734712a0d9345e52fff022~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">VW T-Cross Comfortline</div>
+      <div class="veiculo-preco">R$ 101.791</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o VW T-Cross por R$ 101.791 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
     </div>
   </div>
-
-  <!-- LIGHTBOX -->
-  <div id="lightbox">
-    <span id="close-lightbox">&times;</span>
-    <img id="lightbox-img" src="" alt="Imagem ampliada">
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_34121fba28cb43c6b600e09f047ba7e8~mv2.jpg"
+         alt="VW Polo Highline"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_34121fba28cb43c6b600e09f047ba7e8~mv2.jpg"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">VW Polo Highline</div>
+      <div class="veiculo-preco">R$ 89.399</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o VW Polo por R$ 89.399 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
   </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_5d5ce1f226b44e938af6534ddcb5e5dc~mv2.webp"
+         alt="Peugeot 208 GT"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_5d5ce1f226b44e938af6534ddcb5e5dc~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Peugeot 208 GT</div>
+      <div class="veiculo-preco">R$ 89.900</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Peugeot 208 GT por R$ 89.900 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_216e132b9ac544a09b977662dcb476ea~mv2.webp"
+         alt="Nissan Kicks Platinum"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_216e132b9ac544a09b977662dcb476ea~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Nissan Kicks Platinum</div>
+      <div class="veiculo-preco">R$ 93.000</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Nissan Kicks por R$ 93.000 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_3f6ede1bf920414b807d65ffab6290a5~mv2.webp"
+         alt="Jeep Renegade"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_3f6ede1bf920414b807d65ffab6290a5~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Jeep Renegade</div>
+      <div class="veiculo-preco">R$ 101.863</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Jeep Renegade por R$ 101.863 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_3e4279f9ffd44712a6527f55bf9c08f0~mv2.webp"
+         alt="Renault Kardian"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_3e4279f9ffd44712a6527f55bf9c08f0~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Renault Kardian</div>
+      <div class="veiculo-preco">R$ 105.800</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Renault Kardian por R$ 105.800 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_32df57418b2143b68a26a8b89a5b3920~mv2.avif"
+         alt="Fiat Cronos"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_32df57418b2143b68a26a8b89a5b3920~mv2.avif"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Fiat Cronos</div>
+      <div class="veiculo-preco">R$ 95.203</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Fiat Cronos por R$ 95.203 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_398186bf35ce40b19a54e8bc5e4405df~mv2.png"
+         alt="Fiat Argo"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_398186bf35ce40b19a54e8bc5e4405df~mv2.png"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Fiat Argo</div>
+      <div class="veiculo-preco">R$ 81.646</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Fiat Argo por R$ 81.646 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_2f60488ccc0d4906b1c63e322f402d7c~mv2.webp"
+         alt="Fiat Pulse"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_2f60488ccc0d4906b1c63e322f402d7c~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Fiat Pulse</div>
+      <div class="veiculo-preco">R$ 96.973</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Fiat Pulse por R$ 96.973 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_d7f403208a484e08b5d2755374d389bc~mv2.avif"
+         alt="Fiat Fastback"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_d7f403208a484e08b5d2755374d389bc~mv2.avif"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Fiat Fastback</div>
+      <div class="veiculo-preco">R$ 107.870</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Fiat Fastback por R$ 107.870 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_826682670f8241b4bf2d1340c2aa36a5~mv2.webp"
+         alt="Citroën C3"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_826682670f8241b4bf2d1340c2aa36a5~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Citroën C3</div>
+      <div class="veiculo-preco">R$ 83.157</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Citroën C3 por R$ 83.157 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_3116b29d5d6e4cf284b8966ee9bf30d1~mv2.webp"
+         alt="Citroën C3 Basalt"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_3116b29d5d6e4cf284b8966ee9bf30d1~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Citroën C3 Basalt</div>
+      <div class="veiculo-preco">R$ 87.376</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Citroën C3 Basalt por R$ 87.376 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_4eecf03b22a94e6e951fa7894e36971c~mv2.jpg"
+         alt="Citroën C3 Aircross"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_4eecf03b22a94e6e951fa7894e36971c~mv2.jpg"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Citroën C3 Aircross</div>
+      <div class="veiculo-preco">R$ 92.113</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Citroën C3 Aircross por R$ 92.113 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+  <div class="veiculo-card">
+    <img src="https://static.wixstatic.com/media/ca7734_658bd79052a34b7ba685f6e5f3a433f5~mv2.webp"
+         alt="Honda City"
+         class="veiculo-img"
+         data-large="https://static.wixstatic.com/media/ca7734_658bd79052a34b7ba685f6e5f3a433f5~mv2.webp"
+         loading="lazy">
+    <div class="veiculo-info">
+      <div class="veiculo-nome">Honda City</div>
+      <div class="veiculo-preco">R$ 98.600</div>
+      <a href="https://wa.me/5511991691350?text=Olá, quero o Honda City por R$ 98.600 (com isenções)" target="_blank" class="btn-interesse">
+        <i class="fab fa-whatsapp"></i> Quero esse carro
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+</div>
 
-  <footer>
-    <p>GLOBAL ASSESSORIA EM ISENÇÕES.<br>
-    Av Joaquina Ramalho, 1201 - Sala 6 - Vila Guilherme - São Paulo - SP</p>
-  </footer>
+<!-- LIGHTBOX -->
+<div id="lightbox">
+<span id="close-lightbox">&times;</span>
+<img id="lightbox-img" src="" alt="Imagem ampliada">
+</div>
 
-  <script>
-    // Botão topo
-    let mybutton = document.getElementById("btnTopo");
-    window.onscroll = function() {
-      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        mybutton.style.display = "block";
-      } else {
-        mybutton.style.display = "none";
-      }
-    };
-    function subirTopo() {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+<!-- POPUP PATOLOGIAS PCD (fiel à página oficial, ordem alfabética) -->
+<div id="popupPatologias" class="popup-patologias">
+<div class="popup-content">
+<div class="popup-header">
+Patologias que podem dar direito às isenções PCD
+<button class="close-btn" id="fecharPopupPatologias">×</button>
+</div>
+<div class="popup-body">
+<p style="text-align:justify;">
+Diversas patologias podem lhe garantir o direito às isenções. Abaixo listaremos algumas delas, mas se porventura a sua não está relacionada, nos consulte — analisaremos especificamente seu caso!
+</p>
+<div class="patologia-grid">
+  <div class="patologia-item">Alguns tipos de câncer</div>
+  <div class="patologia-item">Artrite Reumatóide</div>
+  <div class="patologia-item">Artrose</div>
+  <div class="patologia-item">Autismo</div>
+  <div class="patologia-item">AVC (Acidente Vascular Cerebral)</div>
+  <div class="patologia-item">Deficiência Mental</div>
+  <div class="patologia-item">Deficiência Visual</div>
+  <div class="patologia-item">Doenças Degenerativas</div>
+  <div class="patologia-item">Doenças Neurológicas</div>
+  <div class="patologia-item">Encurtamento de membros</div>
+  <div class="patologia-item">Esclerose Múltipla</div>
+  <div class="patologia-item">Escoliose Acentuada</div>
+  <div class="patologia-item">Hérnia de Disco</div>
+  <div class="patologia-item">Lesões com Sequelas físicas</div>
+  <div class="patologia-item">Manguito rotador</div>
+  <div class="patologia-item">Mastectomia (retirada de mama)</div>
+  <div class="patologia-item">Más formações</div>
+  <div class="patologia-item">Nanismo (baixa estatura)</div>
+  <div class="patologia-item">Paralisia Cerebral</div>
+  <div class="patologia-item">Paraplegia</div>
+  <div class="patologia-item">Parkinson</div>
+  <div class="patologia-item">Próteses em joelho, quadril etc</div>
+  <div class="patologia-item">Renal Crônico com uso de (fístula)</div>
+  <div class="patologia-item">Síndrome do Túnel do Carpo</div>
+  <div class="patologia-item">Tendinite Crônica</div>
+</div>
+</div>
+<div class="popup-footer">
+<a href="https://wa.me/5511991691350?text=Olá, quero saber se minha condição me dá direito às isenções PCD" target="_blank" class="btn btn-dourado">
+<i class="fab fa-whatsapp"></i> Fale com um especialista
+</a>
+</div>
+</div>
+</div>
 
-    // Acordêon
-    document.querySelectorAll('.accordion-header').forEach(button => {
-      button.addEventListener('click', () => {
-        const item = button.closest('.accordion-item');
-        item.classList.toggle('active');
-      });
-    });
+</main>
 
-    // Popup "Saiba Mais"
-    const overlay = document.getElementById('popupOverlay');
-    document.getElementById('abrirPopup').addEventListener('click', () => {
-      overlay.style.display = 'flex';
-    });
-    document.getElementById('fecharPopup').addEventListener('click', () => {
-      overlay.style.display = 'none';
-    });
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.style.display = 'none';
-    });
+<footer>
+<p>GLOBAL ASSESSORIA EM ISENÇÕES.<br>
+Av Joaquina Ramalho, 1201 - Sala 6 - Vila Guilherme - São Paulo - SP</p>
+</footer>
 
-    // Modal veículos
-    const modalVeiculos = document.getElementById('modalVeiculos');
-    const btnVeiculos = document.getElementById('btn-veiculos-0km');
-    const spanClose = document.querySelector('.close-modal');
+<script>
+// Topo
+let mybutton = document.getElementById("btnTopo");
+window.onscroll = () => {
+mybutton.style.display = (window.scrollY > 300) ? "block" : "none";
+};
+function subirTopo() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 
-    if (btnVeiculos) {
-      btnVeiculos.addEventListener('click', () => {
-        modalVeiculos.style.display = 'block';
-      });
-    }
+// Acordêon
+document.querySelectorAll('.accordion-header').forEach(btn => {
+btn.addEventListener('click', () => {
+btn.closest('.accordion-item').classList.toggle('active');
+});
+});
 
-    if (spanClose) {
-      spanClose.addEventListener('click', () => {
-        modalVeiculos.style.display = 'none';
-      });
-    }
+// Popup Sobre Nós
+const overlay = document.getElementById('popupOverlay');
+document.getElementById('abrirPopup').onclick = () => overlay.style.display = 'flex';
+document.getElementById('fecharPopup').onclick = () => overlay.style.display = 'none';
+overlay.onclick = e => { if (e.target === overlay) overlay.style.display = 'none'; };
 
-    window.addEventListener('click', (e) => {
-      if (e.target === modalVeiculos) {
-        modalVeiculos.style.display = 'none';
-      }
-    });
+// Modal Veículos
+const modal = document.getElementById('modalVeiculos');
+document.getElementById('btn-veiculos-0km').onclick = () => modal.style.display = 'block';
+document.querySelector('.close-modal').onclick = () => modal.style.display = 'none';
+modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
 
-    // Lightbox
-    document.querySelectorAll('.veiculo-img').forEach(img => {
-      img.addEventListener('click', () => {
-        const largeSrc = img.getAttribute('data-large') || img.src;
-        document.getElementById('lightbox-img').src = largeSrc;
-        document.getElementById('lightbox').style.display = 'flex';
-      });
-    });
+// Lightbox
+document.querySelectorAll('.veiculo-img').forEach(img => {
+img.onclick = () => {
+document.getElementById('lightbox-img').src = img.dataset.large || img.src;
+document.getElementById('lightbox').style.display = 'flex';
+};
+});
+document.getElementById('close-lightbox').onclick = () => document.getElementById('lightbox').style.display = 'none';
+document.getElementById('lightbox').onclick = e => { if (e.target.id === 'lightbox') e.target.style.display = 'none'; };
 
-    document.getElementById('close-lightbox').addEventListener('click', () => {
-      document.getElementById('lightbox').style.display = 'none';
-    });
+// Popup Patologias (FIEL AO CONTEÚDO OFICIAL)
+document.getElementById('btn-saiba-mais-pcd').onclick = () => document.getElementById('popupPatologias').style.display = 'flex';
+document.getElementById('fecharPopupPatologias').onclick = () => document.getElementById('popupPatologias').style.display = 'none';
+document.getElementById('popupPatologias').onclick = e => { if (e.target.id === 'popupPatologias') e.target.style.display = 'none'; };
+</script>
 
-    document.getElementById('lightbox').addEventListener('click', (e) => {
-      if (e.target.id === 'lightbox') {
-        document.getElementById('lightbox').style.display = 'none';
-      }
-    });
-  </script>
 </body>
 </html>
